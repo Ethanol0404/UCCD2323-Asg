@@ -23,7 +23,47 @@
                 "Puzzle Glue"
             ],
             "stock": 22,
-            "category": "Hot Sales"
+            "category": "Best Seller"
+        },
+        {
+            "id": "access1",
+            "name": "Puzzle Sorter",
+            "price": 50.00,
+            "description": "Easy sorting - sort puzzle pieces by color. Efficient organization - combine containers to save space and organize stacking space. Convenient storage and carrying - a matching box will allow you to easily store and carry containers with sorted puzzles.",
+            "images": [
+                "picture/access1/access1-1.png",
+                "picture/access1/access1-2.png"
+            ],
+            "details": {
+                "pieces": "-",
+                "material": "Plastic",
+                "size": "19cm x 19cm"
+            },
+            "includes": [
+                "6 containers"
+            ],
+            "stock": 100,
+            "category": "Accessories"
+        },
+        {
+            "id": "access1",
+            "name": "Puzzle Sorter",
+            "price": 50.00,
+            "description": "Easy sorting - sort puzzle pieces by color. Efficient organization - combine containers to save space and organize stacking space. Convenient storage and carrying - a matching box will allow you to easily store and carry containers with sorted puzzles.",
+            "images": [
+                "picture/access1/access1-1.png",
+                "picture/access1/access1-2.png"
+            ],
+            "details": {
+                "pieces": "-",
+                "material": "Plastic",
+                "size": "19cm x 19cm"
+            },
+            "includes": [
+                "6 containers"
+            ],
+            "stock": 100,
+            "category": "Accessories"
         },
         {
             "id": "access1",
@@ -91,7 +131,7 @@
                 "Puzzle Glue"
             ],
             "stock": 10,
-            "category": "Christmas"
+            "category": "Christmas Special"
         },
         {
             "id": "chrismas2",
@@ -115,7 +155,7 @@
                 "Puzzle Glue"
             ],
             "stock": 55,
-            "category": "Christmas"
+            "category": "Christmas Special"
         },
         {
             "id": "snoopy1",
@@ -138,11 +178,11 @@
             },
             "includes": [
                 "The poster",
-                "12 animal signs key chains",
+                "Snoopy model",
                 "Puzzle Glue"
             ],
             "stock": 22,
-            "category": "2D puzzle"
+            "category": "Snoopy is Here!"
         },
         {
             "id": "snoopy2",
@@ -167,7 +207,7 @@
                 "Puzzle Glue"
             ],
             "stock": 22,
-            "category": "snoopy"
+            "category": "Snoopy is Here!"
         },
         {
             "id": "star",
@@ -216,7 +256,7 @@
                 "Puzzle Glue"
             ],
             "stock": 212,
-            "category": "Hot Sales"
+            "category": "Best Seller"
         },
         {
             "id": "white",
@@ -245,4 +285,3 @@
         }
     ]
 }
-

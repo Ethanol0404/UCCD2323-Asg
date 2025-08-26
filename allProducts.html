@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us-PickPuzz</title>
+    <title>Home-PickPuzz</title>
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/aboutUs.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/allProducts.css">
+
 </head>
 
 <body>
@@ -38,41 +40,24 @@
 
 
 
-
+    <!-- main content -->
     <div class="mainContainer">
-        <div class="aboutUs">
-            <div class="aboutUsMain">
-                <h1>About Us</h1>
-                <p>We are a team of puzzle enthusiasts dedicated to bringing you the best selection of puzzles from
-                    around the world. Our mission is to provide high-quality puzzles that challenge and entertain.</p>
-                <p>Whether you're a beginner or a seasoned puzzler, we have something for everyone. Explore our
-                    collection and find your next favorite puzzle!</p>
-                <br>
-            </div>
-            <div class="subAboutUs" id="vision">
-                <img src="picture/vision.png" alt="Vision" width="720px" height="1000px">
-                <div class="aboutUsText">
-                    <h2>Our Vision</h2>
-                    <p>To create a vibrant community of puzzle lovers who share a passion for creativity,</p>
-                    <p>To be the leading online destination for puzzle lovers, offering a diverse range of puzzles that
-                        inspire creativity and joy.</p>
-                </div>
 
-            </div>
-            <br>
-            <div class="subAboutUs" id="mission">
-                <div class="aboutUsText">
-                    <h2>Our Mission</h2>
-                    <p>To create a vibrant community of puzzle lovers who share a passion for creativity,</p>
-                    <p>To be the leading online destination for puzzle lovers, offering a diverse range of puzzles that
-                        inspire creativity and joy.</p>
-                </div>
-                <img src="picture/vision.png" alt="Vision" width="720px" height="1000px">
-
-            </div>
+        <!-- All Products (only shown on allProducts.html) -->
+        <div id="categoriesContainer">
+            <!-- categories will be rendered here -->
         </div>
 
+        <!-- Related Products (only shown on productDetail.html) -->
+        <div class="related-container-2" id="relatedProducts">
+            <!-- related products will be rendered here -->
+        </div>
+
+        <!-- Back to top button -->
+        <button id="backToTopBtn" class="btn">Back to top</button>
+
     </div>
+
 
     <div class="filterCatContainer">
 
@@ -164,7 +149,6 @@
     </div>
 
     <div class="overlay"></div>
-
     <footer>
         <div class="footMain">
             <div class="footInfo">
@@ -217,7 +201,10 @@
         </div>
 
     </footer>
-
-    <script src="js/main.js""></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/productDetail.js"></script>
+    <script src="js/allProducts.js"></script>
 </body>
+
 </html>
