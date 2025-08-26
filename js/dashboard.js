@@ -49,8 +49,8 @@ function fetchData() {
 let users = JSON.parse(localStorage.getItem("users")) || [];
 const loggedInEmail = getCookie("loggedInUser") || sessionStorage.getItem("loggedInUser");
 
-document.addEventListener('DOMContentLoaded', ()=> {
-    if(!loggedInEmail) {
+document.addEventListener('DOMContentLoaded', () => {
+    if (!loggedInEmail) {
         alert("No user is currently logged in. Redirecting to login page.");
         window.location.href = "login.html"; // Redirect to login page
     }
@@ -513,6 +513,11 @@ form.addEventListener("submit", function (event) {
     }
     const newPassword = newPasswordInput.value;
     const confirmPassword = confirmPasswordInput.value;
+
+    if (newPassword.length < 8) {
+        alert("Password must be at least 8 characters long.");
+        return;
+    }
 
     if (newPassword === "" || confirmPassword === "") {
         alert("Please fill in all password fields.");
