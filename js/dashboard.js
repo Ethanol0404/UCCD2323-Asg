@@ -36,6 +36,7 @@ function getCookie(name) {
 }
 
 
+
 document.addEventListener('DOMContentLoaded', fetchData);
 
 // Initialize all data from localStorage
@@ -47,6 +48,13 @@ function fetchData() {
 
 let users = JSON.parse(localStorage.getItem("users")) || [];
 const loggedInEmail = getCookie("loggedInUser");
+
+document.addEventListener('DOMContentLoaded', ()=> {
+    if(!loggedInEmail) {
+        alert("No user is currently logged in. Redirecting to login page.");
+        window.location.href = "login.html"; // Redirect to login page
+    }
+});
 
 // Find current logged-in user
 let user = users.find(u => u.email === loggedInEmail);
@@ -112,21 +120,18 @@ function saveProfile() {
         return;
     }
 
-    // Create profile data object
-    const profileData = {
-        username,
-        email,
-        countryCode,
-        phone,
-        gender,
-        dob
-    };
+    user.username = username;
+    user.email = email;
+    user.countryCode = countryCode;
+    user.phone = phone;
+    user.gender = gender;
+    user.dob = dob;
 
     // Save to localStorage
-    localStorage.setItem('users', JSON.stringify(profileData));
+    localStorage.setItem('users', JSON.stringify(users));
 
     // Update the view with new values
-    updateProfileView(profileData);
+    updateProfileView(user);
 
     alert('Profile updated successfully!');
 
@@ -135,14 +140,13 @@ function saveProfile() {
 }
 
 
+let bankCards = user.bankCards || [];
 
 // BANK FUNCTIONS
-function initializeBanksCard() {
-    let bankCards = JSON.parse(localStorage.getItem('users'));
-
+function fetchBanksCard() {
     if (!bankCards) {
         bankCards = [];
-        localStorage.setItem('users', JSON.stringify(bankCards));
+        localStorage.setItem('users', JSON.stringify(users));
     }
 
     // Update the view with stored values
@@ -158,7 +162,7 @@ function updateBankCardsView(bankCards) {
         cardItem.className = 'card-item';
         cardItem.addEventListener("click", () => showBankCardInfo(index));
         cardItem.innerHTML = `
-                    <div class="card-details" >
+                    <div class="card-details">
                         <h5>${bankCard.bankCardName}</h5>
                         <p><strong>Account:</strong> **** **** **** ${bankCard.accountNumber.slice(-4)}</p>
                         <p><strong>Expires:</strong> ${bankCard.expiryDate}</p>
@@ -172,7 +176,6 @@ function updateBankCardsView(bankCards) {
 }
 
 function loadBankCardForm(index = -1) {
-    const bankCards = JSON.parse(localStorage.getItem('users')) || [];
 
     // account number input formatter
     const accountNumberInput = document.getElementById("accountNumber");
@@ -233,7 +236,6 @@ function saveBankCard() {
         return;
     }
 
-    const bankCards = JSON.parse(localStorage.getItem('users')) || [];
     const bankCardData = {
         bankCardName,
         accountNumber,
@@ -243,14 +245,14 @@ function saveBankCard() {
 
     if (index >= 0 && index < bankCards.length) {
         // Update existing bankCard
-        bankCards[index] = bankCardData;
+        user.bankCards[index] = bankCardData;
     } else {
         // Add new bankCard
-        bankCards.push(bankCardData);
+        user.bankCards.push(bankCardData);
     }
 
     // Save to localStorage
-    localStorage.setItem('users', JSON.stringify(bankCards));
+    localStorage.setItem('users', JSON.stringify(users));
 
     // Update the view
     updateBankCardsView(bankCards);
@@ -262,7 +264,6 @@ function saveBankCard() {
 }
 
 function showBankCardInfo(index) {
-    const bankCards = JSON.parse(localStorage.getItem('users')) || [];
     const bankCard = bankCards[index];
 
     if (!bankCard) return;
@@ -307,10 +308,9 @@ function showBankCardInfo(index) {
 
 function removeBankCard(index) {
     if (confirm('Are you sure you want to remove this bank card account?')) {
-        const bankCards = JSON.parse(localStorage.getItem('users')) || [];
         if (index >= 0 && index < bankCards.length) {
             bankCards.splice(index, 1);
-            localStorage.setItem('users', JSON.stringify(bankCards));
+            localStorage.setItem('users', JSON.stringify(users));
             updateBankCardsView(bankCards);
             alert('Bank Card account removed successfully!');
         }
@@ -318,13 +318,12 @@ function removeBankCard(index) {
     }
 }
 
+let addresses = user.addresses || [];
 // ADDRESS FUNCTIONS
-function initializeAddresses() {
-    let addresses = JSON.parse(localStorage.getItem('users'));
-
+function fetchAddresses() {
     if (!addresses) {
         addresses = [];
-        localStorage.setItem('users', JSON.stringify(addresses));
+        localStorage.setItem('users', JSON.stringify(users));
     }
 
     // Update the view with stored values
@@ -354,7 +353,6 @@ function updateAddressesView(addresses) {
 }
 
 function loadAddressForm(index = -1) {
-    const addresses = JSON.parse(localStorage.getItem('users')) || [];
 
     if (index >= 0 && index < addresses.length) {
         // Editing existing address
@@ -400,7 +398,6 @@ function saveAddress() {
         return;
     }
 
-    const addresses = JSON.parse(localStorage.getItem('users')) || [];
     const addressData = {
         title,
         addressLine1: address1,
@@ -413,14 +410,14 @@ function saveAddress() {
 
     if (index >= 0 && index < addresses.length) {
         // Update existing address
-        addresses[index] = addressData;
+        user.addresses[index] = addressData;
     } else {
         // Add new address
-        addresses.push(addressData);
+        user.addresses.push(addressData);
     }
 
     // Save to localStorage
-    localStorage.setItem('users', JSON.stringify(addresses));
+    localStorage.setItem('users', JSON.stringify(users));
 
     // Update the view
     updateAddressesView(addresses);
@@ -432,7 +429,6 @@ function saveAddress() {
 }
 
 function showAddressInfo(index) {
-    const addresses = JSON.parse(localStorage.getItem('users')) || [];
     const address = addresses[index];
 
     if (!address) return;
@@ -489,10 +485,9 @@ function showAddressInfo(index) {
 
 function removeAddress(index) {
     if (confirm('Are you sure you want to remove this address?')) {
-        const addresses = JSON.parse(localStorage.getItem('users')) || [];
         if (index >= 0 && index < addresses.length) {
             addresses.splice(index, 1);
-            localStorage.setItem('users', JSON.stringify(addresses));
+            localStorage.setItem('users', JSON.stringify(users));
             updateAddressesView(addresses);
             alert('Address removed successfully!');
         }
@@ -500,9 +495,7 @@ function removeAddress(index) {
     }
 }
 
-// password
-const isNewUser = true;
-
+// PASSWORD CHANGE FUNCTIONS
 const oldPasswordInput = document.getElementById("oldPassword");
 const newPasswordInput = document.getElementById("newPassword");
 const confirmPasswordInput = document.getElementById("confirmPassword");
@@ -514,6 +507,10 @@ const form = document.getElementById("passwordForm");
 form.addEventListener("submit", function (event) {
     event.preventDefault(); // Stop form from submitting immediately
 
+    if (oldPasswordInput.value !== user.password) {
+        alert("Old password is incorrect!");
+        return;
+    }
     const newPassword = newPasswordInput.value;
     const confirmPassword = confirmPasswordInput.value;
 
@@ -527,6 +524,8 @@ form.addEventListener("submit", function (event) {
             alert("New Password and Confirm Password do not match!");
             return;
         } else {
+            user.password = newPassword;
+            localStorage.setItem("users", JSON.stringify(users));
             alert("Password updated successfully!");
             form.submit(); // <-- only submit if valid
         }
