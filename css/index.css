@@ -11,6 +11,25 @@
     margin: 40px;
 }
 
+.categories img{
+    border-radius: 20px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease-in-out;
+    flex: 0 0 25%;
+}
+
+#cat1:hover,
+#cat2:hover,
+#cat4:hover,
+#cat5:hover,
+#cat3:hover {
+    transform: scale(1.02);
+    border: none;
+    transition: transform 0.5s ease-in-out;
+    z-index: 2;
+    cursor: pointer;
+}
+
 .catGroup {
     display: flex;
     flex-direction: row;
@@ -22,39 +41,44 @@
 #cat1 {
     width: 800px;
     height: 500px;
-    background-color: black;
-    border-radius: 10px;
+    background-color: white;
+    border-radius: 50px;
+    transition: transform 0.5s ease-in-out;
 }
 
 #cat2 {
     width: 600px;
     height: 500px;
-    background-color: black;
-    border-radius: 10px;
+    background-color: white;
+    border-radius: 50px;
     margin-left: 20px;
+    transition: transform 0.5s ease-in-out;
 }
 
 #cat3 {
     width: 1420px;
     height: 500px;
-    background-color: black;
-    border-radius: 10px;
+    background-color: white;
+    border-radius: 50px;
     margin-left: 20px;
+    transition: transform 0.5s ease-in-out;
 }
 
 #cat4 {
     width: 600px;
     height: 500px;
-    background-color: black;
-    border-radius: 10px;
+    background-color: white;
+    border-radius: 50px;
+    transition: transform 0.5s ease-in-out;
 }
 
 #cat5 {
     width: 800px;
     height: 500px;
-    background-color: black;
-    border-radius: 10px;
+    background-color: white;
+    border-radius: 50px;
     margin-left: 20px;
+    transition: transform 0.5s ease-in-out;
 }
 
 .forYou {
@@ -208,3 +232,4 @@
 #cookiesAcceptBtn:hover {
     background-color: #c68203;
 }
+
