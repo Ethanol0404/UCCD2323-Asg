@@ -123,13 +123,14 @@
     border: none;
     padding: 15px 25px;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     cursor: pointer;
     display: none;
-    align-items: center;
+    align-items: right;
     gap: 10px;
     margin-top: 20px;
+    right: 30px;
     color: black;
     background: rgba(128, 128, 128, 0.505)
 }
