@@ -97,6 +97,22 @@ a:hover {
     right: 40px;
 }
 
+/* Cart quantity badge for header cart icon */
+.cart-qty-badge {
+    position: absolute;
+    right: -14px;
+    top: -42px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 4px 7px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 10;
+    display: none;
+}
+
+
 #profile {
     top: 110px;
     position: absolute;
