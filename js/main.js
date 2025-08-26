@@ -14,7 +14,7 @@ function getCookie(name) {
   return null;
 }
 
-const auth = getCookie("loggedInUser") || sessionStorage.getItem("authToken");
+const auth = getCookie("loggedInUser") || sessionStorage.getItem("loggedInUser");
 
 if (auth) {
   profileDropdown.style.display = "none";
