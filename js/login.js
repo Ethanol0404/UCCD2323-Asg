@@ -19,6 +19,10 @@ function getCookie(name) {
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector(".loginForm");
 
+    if(!localStorage.getItem('cookiesConsent')){
+        localStorage.setItem('cookiesConsent', 'false');
+    }
+
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -38,6 +42,11 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log('Cookies consent given, setting persistent cookie');
             setCookie("loggedInUser", email, 7);
         }
+        else {
+            console.log('Cookies denied, using sessionStorage instead');
+            sessionStorage.setItem("loggedInUser", email);
+        }
+
         alert("Login successful!");
         window.location.href = "index.html";
     });
