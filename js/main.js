@@ -1,3 +1,67 @@
+const profileIcon = document.getElementById("profile");
+const profileDropdown = document.getElementById("profileDropdown");
+const signDropdown = document.getElementById("signDropdown");
+
+function getCookie(name) {
+  const nameEQ = name + "=";
+  const ca = decodeURIComponent(document.cookie).split(";");
+  for (let c of ca) {
+    c = c.trim();
+    if (c.startsWith(nameEQ)) {
+      return c.substring(nameEQ.length);
+    }
+  }
+  return null;
+}
+
+const auth = getCookie("loggedInUser") || sessionStorage.getItem("loggedInUser");
+
+if (auth) {
+  profileDropdown.style.display = "none";
+  signDropdown.style.display = "none";
+} else {
+  signDropdown.style.display = "none";
+  profileDropdown.style.display = "none";
+}
+
+profileIcon.addEventListener("click", () => {
+  if (auth) {
+    profileDropdown.classList.toggle("show");
+  } else {
+    signDropdown.classList.toggle("show");
+  }
+});
+
+document.addEventListener("click", (e) => {
+  if (!profileIcon.contains(e.target) &&
+      !profileDropdown.contains(e.target) &&
+      !signDropdown.contains(e.target)) {
+    [profileDropdown, signDropdown].forEach(dd => {
+      if (dd.classList.contains("show")) {
+        dd.classList.remove("show");
+        setTimeout(() => {
+          dd.style.display = "none";
+        }, 300);
+      }
+    });
+  }
+});
+
+function attachObserver(dropdown) {
+  const observer = new MutationObserver(() => {
+    if (dropdown.classList.contains("show")) {
+      dropdown.style.display = "flex";
+    }
+  });
+  observer.observe(dropdown, { attributes: true, attributeFilter: ["class"] });
+}
+
+attachObserver(profileDropdown);
+attachObserver(signDropdown);
+
+
+
+
 /* menu toggle */
 const menuBtn = document.getElementById("menuIcon");
 const filterContainer = document.querySelector(".filterCatContainer");
@@ -90,3 +154,16 @@ for (let i = 0; i < priceInputvalue.length; i++) {
         });
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            document.cookie = "loggedInUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            alert("Logged out successfully!");
+            window.location.href = "login.html";
+        });
+    }
+});

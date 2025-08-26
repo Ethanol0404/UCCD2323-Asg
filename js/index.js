@@ -11,9 +11,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Check cookies consent
     const cookiesConsent = localStorage.getItem('cookiesConsent');
     console.log('Cookies consent status:', cookiesConsent);
-    if (cookiesConsent !== null) {
+    if (cookiesConsent) {
         cookies.style.display = 'none';
     }
+
+    setTimeout(() => {
+        if (!cookiesConsent) {
+            cookies.style.display = 'none';
+            localStorage.setItem('cookiesConsent', false);
+        }
+    }, 5 * 60 * 1000);
+    
 });
 
 // Load product data from JSON file
@@ -100,3 +108,4 @@ document.getElementById('cookiesAcceptBtn').addEventListener('click', function()
     cookies.style.display = 'none';
     localStorage.setItem('cookiesConsent', true);
 });
+

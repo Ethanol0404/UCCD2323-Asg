@@ -2,33 +2,63 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout</title>
+  <title>Checkout - PickPuzz</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/checkout.css">
+  <link rel="icon" type="image/x-icon" href="picture/favicon.ico">
 </head>
 
 <body>
-  <div class="header d-flex align-items-center">
+  <!--Header-->
+  <div class="header">
+    <button class="backBtn">
+      <svg xmlns="http://www.w3.org/2000/svg" class="arr-2" viewBox="0 0 24 24">
+        <path
+          d="M7.82843 13.0001L13.1924 18.3641L11.7782 19.7783L4 12.0001L11.7782 4.22198L13.1924 5.63619L7.82843 11.0001H20V13.0001H7.82843Z">
+        </path>
+      </svg>
+
+      <span class="text">Back</span>
+      <span class="circle"></span>
+
+      <svg xmlns="http://www.w3.org/2000/svg" class="arr-1" viewBox="0 0 24 24">
+        <path
+          d="M7.82843 13.0001L13.1924 18.3641L11.7782 19.7783L4 12.0001L11.7782 4.22198L13.1924 5.63619L7.82843 11.0001H20V13.0001H7.82843Z">
+        </path>
+      </svg>
+
+    </button>
+
     <div class="logo">
-      <img id="logoIcon" src="picture/logo2b.png" alt="Logo" width="135px" height="85px">
-      <t>Checkout</t>
+      <a href="index.html"><img id="logoIcon" src="picture/logo2c.png" alt="logo" width="145px" height="75px"></a>
     </div>
+
   </div>
 
-  <div class="container my-4">
+
+  <!-- Empty message -->
+  <div id="emptyMessage" class="alert alert-info text-center" style="display:block">
+    Your cart is empty.
+  </div>
+
+
+  <!--Cart Items-->
+  <!--<div class="container my-4">
     <table class="table checkout-table">
+
       <thead>
         <tr>
           <th>Product Ordered</th>
           <th>Unit Price</th>
           <th>Quantity</th>
           <th>Item Subtotal</th>
+          <th>Action</th>
         </tr>
       </thead>
 
-      <tbody>
+      <tbody id="cartItems">
         <tr>
           <td>
             <div class="d-flex align-items-center">
@@ -36,7 +66,7 @@
                 style="vertical-align:middle;margin:40px 30px">
               <div>
                 <strong>Starlit Odyssey</strong><br>
-                Pieces: 500  |  Materials: Plastic  |  Size: 60.5cm x 74.8cm
+                Pieces: 500 | Materials: Plastic | Size: 60.5cm x 74.8cm
               </div>
             </div>
           </td>
@@ -51,6 +81,13 @@
           </td>
 
           <td class="subtotal">RM240</td>
+
+          <td>
+            <button class="btn btn-danger btn-sm delete-btn">
+               <img src="picture/disposal.png" alt="Delete" width="16" height="16">Delete
+            </button>
+          </td>
+
         </tr>
 
 
@@ -61,7 +98,7 @@
                 style="vertical-align:middle;margin:10px 10px">
               <div>
                 <strong>Christmas Square</strong><br>
-                Pieces: 250  |  Materials: Cardboard  |  Size: 50cm x 70cm
+                Pieces: 250 | Materials: Cardboard | Size: 50cm x 70cm
               </div>
             </div>
           </td>
@@ -75,87 +112,228 @@
           </td>
 
           <td class="subtotal">RM120</td>
+
+          <td>
+            <button class="btn btn-danger btn-sm delete-btn">
+              <img src="picture/disposal.png" alt="Delete" width="30" height="30">Delete
+            </button>
+          </td>
         </tr>
       </tbody>
 
-    </table>
+    </table>-->
 
-    <!-- Shipping Method -->
-    <div class="my-4">
-      <div class="section-title">Shipping Method</div>
-      <div class="row">
-        <div class="col-md-6">
-          <label class="box-option w-100">
-            <input type="radio" name="shipping" value="Home Delivery" class="me-2"> Home Delivery
-          </label>
+
+
+  <!-- Shipping Method -->
+  <div class="container my-4">
+    <div class="section-title">Shipping Method</div>
+
+    <form id="shippingForm" class="needs-validation" novalidate>
+      <div class="accordion" id="shippingAccordion">
+        <!-- Home Delivery -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingHome">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHome"
+              aria-expanded="true" aria-controls="collapseHome">
+              <input type="radio" name="shipping" value="Home Delivery" class="me-2" id="homeRadio" required>
+              <label for="homeRadio" class="mb-0">Home Delivery</label>
+            </button>
+          </h2>
+
+          <div id="collapseHome" class="accordion-collapse collapse" aria-labelledby="headingHome"
+            data-bs-parent="#shippingAccordion">
+            <div class="accordion-body">
+              <label for="homeAddress" class="form-label">Enter Delivery Address:</label>
+              <input type="text" id="homeAddress" class="form-control" placeholder="e.g. No.12, Jalan ABC, Kuala Lumpur"
+                required>
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please provide a valid address.</div>
+            </div>
+          </div>
         </div>
-        <div class="col-md-6">
-          <label class="box-option w-100">
-            <input type="radio" name="shipping" value="In-Store Pickup" class="me-2"> In-Store Pickup (free shipping)
-          </label>
+
+        <!-- Self Collection -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingPickup">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapsePickup" aria-expanded="false" aria-controls="collapsePickup">
+              <input type="radio" name="shipping" value="Self Collection" class="me-2" id="pickupRadio" required>
+              <label for="pickupRadio" class="mb-0">Self Collection Point</label>
+            </button>
+          </h2>
+          <div id="collapsePickup" class="accordion-collapse collapse" aria-labelledby="headingPickup"
+            data-bs-parent="#shippingAccordion">
+            <div class="accordion-body">
+              <label for="pickupAddress" class="form-label">Enter Collection Point Address:</label>
+              <input type="text" id="pickupAddress" class="form-control"
+                placeholder="e.g. Mid Valley Mall Pickup Counter" required>
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please select a valid collection point.</div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <!-- Address input (hidden by default) -->
-      <div id="addressBox" class="mt-3" style="display:none;">
-        <label for="deliveryAddress" class="form-label">Delivery Address</label>
-        <textarea id="deliveryAddress" class="form-control" rows="3" placeholder="Enter your full address"></textarea>
-        <button id="saveAddressBtn" class="btn btn-sm btn-success mt-2">Save Address</button>
-      </div>
-    </div>
-
-    <!-- Payment Method -->
-    <div class="my-4">
-      <div class="section-title">Payment Method</div>
-      <div class="row">
-        <div class="col-md-6 mb-2">
-          <label class="box-option w-100">
-            <input type="radio" name="payment" value="Online Banking" class="me-2"> Online Banking
-          </label>
-        </div>
-        <div class="col-md-6 mb-2">
-          <label class="box-option w-100">
-            <input type="radio" name="payment" value="E-wallet Transfer" class="me-2"> E-wallet Transfer
-          </label>
-        </div>
-        <div class="col-md-6 mb-2">
-          <label class="box-option w-100">
-            <input type="radio" name="payment" value="Credit / Debit Card" class="me-2"> Credit / Debit Card
-          </label>
-        </div>
-        <div class="col-md-6 mb-2">
-          <label class="box-option w-100">
-            <input type="radio" name="payment" value="Cash Payment" class="me-2"> Cash Payment at Physical Store
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <!-- Order Summary -->
-    <div class="summary-box d-flex justify-content-between align-items-center">
-      <div>
-        <input type="checkbox" id="selectAll"> Select All
-      </div>
-      <!-- Delete All Button -->
-      <div class="text-end mb-4">
-        <button id="deleteAllBtn" class="btn btn-danger">Delete All</button>
-      </div>
-
-      <div class="text-end">
-        <p class="mb-1">Product price: <strong id="productPrice">RM 360</strong></p>
-        <p class="mb-1">Shipping fee: <strong id="shippingFee">RM 0</strong></p>
-        <p class="mb-1 fs-5">Total price:
-          <span id="totalPrice" class="text-danger fw-bold">RM 360</span>
-        </p>
-      </div>
-
-      <button class="btn btn-confirm px-4 py-2">Confirm Order</button>
-    </div>
+      <button class="btn btn-primary mt-3" type="submit">Save Shipping Info</button>
+    </form>
   </div>
+
+
+  <!-- Payment Method -->
+  <div class="container my-4">
+    <div class="section-title">Payment Method</div>
+
+    <form id="paymentForm" class="needs-validation" novalidate>
+      <div class="accordion" id="paymentAccordion">
+
+        <!-- Online Banking -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingBank">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBank"
+              aria-expanded="true" aria-controls="collapseBank">
+              <input type="radio" name="payment" value="Online Banking" class="me-2" id="bankRadio" required>
+              <label for="bankRadio" class="mb-0">Online Banking</label>
+            </button>
+          </h2>
+          <div id="collapseBank" class="accordion-collapse collapse" aria-labelledby="headingBank"
+            data-bs-parent="#paymentAccordion">
+            <div class="accordion-body">
+              <label for="bankSelect" class="form-label">Select Your Bank:</label>
+              <select id="bankSelect" class="form-select" required>
+                <option value="">-- Select Bank --</option>
+                <option value="https://www.maybank2u.com.my/home/m2u/common/login.do">Maybank</option>
+                <option value="https://www.cimbclicks.com.my/clicks/#/">CIMB</option>
+                <option
+                  value="https://secure.pbebank.com/myIBK/apppbb/servlet/BxxxServlet?RDOName=BxxxAuth&MethodName=login">
+                  Public Bank</option>
+                <option value="https://s.hongleongconnect.my/rib/app/fo/login?icp=hlb-en-all-header-txt-connectweb">
+                  Hong
+                  Leong Bank</option>
+              </select>
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please select a bank.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- E-wallet Transfer -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingEwallet">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseEwallet" aria-expanded="false" aria-controls="collapseEwallet">
+              <input type="radio" name="payment" value="E-wallet Transfer" class="me-2" id="ewalletRadio" required>
+              <label for="ewalletRadio" class="mb-0">E-wallet Transfer</label>
+            </button>
+          </h2>
+          <div id="collapseEwallet" class="accordion-collapse collapse" aria-labelledby="headingEwallet"
+            data-bs-parent="#paymentAccordion">
+            <div class="accordion-body">
+              <label for="ewalletSelect" class="form-label">Select your E-wallet type:</label>
+              <select id="ewalletSelect" class="form-select" required>
+                <option value="">-- Select E-wallet --</option>
+                <option value="DuitNow">DuitNow</option>
+                <option value="Touch 'n Go">Touch 'n Go</option>
+              </select>
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please select an E-wallet option.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Credit / Debit Card -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingCard">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseCard" aria-expanded="false" aria-controls="collapseCard">
+              <input type="radio" name="payment" value="Credit/Debit Card" class="me-2" id="cardRadio" required>
+              <label for="cardRadio" class="mb-0">Credit/Debit Card</label>
+            </button>
+          </h2>
+          <div id="collapseCard" class="accordion-collapse collapse" aria-labelledby="headingCard"
+            data-bs-parent="#paymentAccordion">
+            <div class="accordion-body">
+              <label for="cardNumber" class="form-label">Card Number:</label>
+              <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" maxlength="16"
+                inputmode="numeric" required>
+              <div class="invalid-feedback">Please key in the correct input.</div>
+
+              <label for="cardExpiry" class="form-label mt-2">Expiry Date:</label>
+              <input type="text" id="cardExpiry" class="form-control" placeholder="MM/YY" required>
+
+              <label for="cardCVV" class="form-label mt-2">Card Verification Value (CVV):</label>
+              <input type="text" id="cardCVV" class="form-control" placeholder="123" maxlength="3" pattern="\d{3}"
+                inputmode="numeric" required>
+              <div class="invalid-feedback">CVV must be 3 digits.</div>
+
+              <div class="valid-feedback">Looks good!</div>
+              <div class="invalid-feedback">Please enter valid card details.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary mt-3" type="submit">Save Payment Info</button>
+    </form>
+  </div>
+
+
+  <!--This part haven't complete yet-->
+  <!-- Order Summary (Fixed at bottom)-->
+  <div class="cart-summary d-flex justify-content-between align-items-center px-4 py-2">
+
+    <!-- Select All + Delete All -->
+    <div class="d-flex align-items-center gap-3">
+      <div>
+        <input type="checkbox" id="selectAll">
+        <label for="selectAll" class="mb-0">Select All</label>
+      </div>
+
+      <button class="btn btn-danger btn-sm text-danger p-0">Delete</button>
+    </div>
+
+    <!--Summary-->
+    <div class="d-flex align-items-center gap-4">
+      <!--Total Price Calculation-->
+      <div class="text-right">
+        <p class="mb-0">Total Price:
+          <span class="text-danger fw-bold"></span>
+        </p>
+
+        <p class="mb-0">Shipping Fee:
+          <span class="text-danger fw-bold"></span>
+        </p>
+
+      </div>
+
+      <!--Confirm Order Button-->
+      <button id="confirmOrder" class="btn btn-confirm px-4 py-2">Confirm Order</button>
+    </div>
+
+  </div>
+
+
+  <div class="align-items-center">
+
+    <div>
+      <input type="checkbox" id="selectAll"> Select All
+    </div>
+
+    <button id="deleteAllBtn" class="btn btn-danger btn-sm">Delete All</button>
+  </div>
+
+  <!-- Price details -->
+  <div class="text-right">
+    <p class="mb-1">Product price: </p>
+    <p class="mb-1">Shipping fee: </p>
+    <p class="mb-1 fs-5">Total price:</p>
+  </div>
+
+  </div>
+
 
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/checkout.js"></script>
 </body>
 
 </html>

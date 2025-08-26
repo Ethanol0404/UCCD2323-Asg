@@ -104,7 +104,7 @@ a:hover {
 }
 
 /* Profile Dropdown */
-#profileDropdown {
+.dropdown {
     position: absolute;
     top: 110px;
     right: 100px;
@@ -122,13 +122,13 @@ a:hover {
 }
 
 /* Show when active */
-#profileDropdown.show {
+.dropdown.show {
     display: flex;
     opacity: 1;
     transform: translateX(0);
 }
 
-#profileDropdown a {
+.dropdown a {
     padding: 12px 16px;
     text-decoration: none;
     color: #333;
@@ -137,7 +137,7 @@ a:hover {
     font-size: 18px;
 }
 
-#profileDropdown a:hover {
+.dropdown a:hover {
     background: #f2f2f2;
     color: #000;
 }

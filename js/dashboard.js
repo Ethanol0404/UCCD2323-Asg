@@ -22,36 +22,61 @@ navLinks.forEach(link => {
     });
 });
 
-// Initialize the data when the page loads
-document.addEventListener('DOMContentLoaded', initializeData);
+function getCookie(name) {
+    const cname = name + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(';');
+    for (let c of ca) {
+        c = c.trim();
+        if (c.indexOf(cname) === 0) {
+            return c.substring(cname.length, c.length);
+        }
+    }
+    return "";
+}
+
+
+
+document.addEventListener('DOMContentLoaded', fetchData);
 
 // Initialize all data from localStorage
-function initializeData() {
-    initializeProfile();
-    initializeBanksCard();
-    initializeAddresses();
+function fetchData() {
+    fetchProfile();
+    fetchBanksCard();
+    fetchAddresses();
 }
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+const loggedInEmail = getCookie("loggedInUser") || sessionStorage.getItem("loggedInUser");
+
+document.addEventListener('DOMContentLoaded', ()=> {
+    if(!loggedInEmail) {
+        alert("No user is currently logged in. Redirecting to login page.");
+        window.location.href = "login.html"; // Redirect to login page
+    }
+});
+
+// Find current logged-in user
+let user = users.find(u => u.email === loggedInEmail);
 
 // PROFILE FUNCTIONS
-function initializeProfile() {
-    let profileData = JSON.parse(localStorage.getItem('profileData'));
+function fetchProfile() {
+    // Ensure defaults if missing (only fill empty values, don’t overwrite)
+    if (!user.username) user.username = 'user';
+    if (!user.email) user.email = loggedInEmail || '';
+    if (!user.countryCode) user.countryCode = '+60';
+    if (!user.phone) user.phone = '';
+    if (!user.gender) user.gender = 'male';
+    if (!user.dob) user.dob = '';
 
-    if (!profileData) {
-        // Set default values if no data exists
-        profileData = {
-            username: 'user',
-            email: '',
-            countryCode: '+60',
-            phone: '',
-            gender: 'male',
-            dob: ''
-        };
-        localStorage.setItem('profileData', JSON.stringify(profileData));
-    }
+    // Save back updated users array
+    localStorage.setItem("users", JSON.stringify(users));
 
-    // Update the view with stored values
-    updateProfileView(profileData);
+    // Update the view with the current user's data
+    updateProfileView(user);
 }
+
+
 
 function updateProfileView(profileData) {
     document.getElementById('username').textContent = profileData.username;
@@ -63,21 +88,18 @@ function updateProfileView(profileData) {
 }
 
 function loadEditForm() {
-    const profileData = JSON.parse(localStorage.getItem('profileData'));
+    document.getElementById('editUsername').value = user.username;
+    document.getElementById('editEmail').value = user.email;
+    document.getElementById('editCountryCode').value = user.countryCode;
+    document.getElementById('editPhone').value = user.phone;
+    document.getElementById('editDob').value = user.dob;
 
-    if (profileData) {
-        document.getElementById('editUsername').value = profileData.username;
-        document.getElementById('editEmail').value = profileData.email;
-        document.getElementById('editCountryCode').value = profileData.countryCode;
-        document.getElementById('editPhone').value = profileData.phone;
-        document.getElementById('editDob').value = profileData.dob;
-
-        // Set gender radio button
-        document.querySelectorAll('input[name="editGender"]').forEach(radio => {
-            radio.checked = (radio.value === profileData.gender);
-        });
-    }
+    // Set gender radio button
+    document.querySelectorAll('input[name="editGender"]').forEach(radio => {
+        radio.checked = (radio.value === user.gender);
+    });
 }
+
 
 function saveProfile() {
     const username = document.getElementById('editUsername').value;
@@ -98,21 +120,18 @@ function saveProfile() {
         return;
     }
 
-    // Create profile data object
-    const profileData = {
-        username,
-        email,
-        countryCode,
-        phone,
-        gender,
-        dob
-    };
+    user.username = username;
+    user.email = email;
+    user.countryCode = countryCode;
+    user.phone = phone;
+    user.gender = gender;
+    user.dob = dob;
 
     // Save to localStorage
-    localStorage.setItem('profileData', JSON.stringify(profileData));
+    localStorage.setItem('users', JSON.stringify(users));
 
     // Update the view with new values
-    updateProfileView(profileData);
+    updateProfileView(user);
 
     alert('Profile updated successfully!');
 
@@ -121,14 +140,13 @@ function saveProfile() {
 }
 
 
+let bankCards = user.bankCards || [];
 
 // BANK FUNCTIONS
-function initializeBanksCard() {
-    let bankCards = JSON.parse(localStorage.getItem('bankCards'));
-
+function fetchBanksCard() {
     if (!bankCards) {
         bankCards = [];
-        localStorage.setItem('bankCards', JSON.stringify(bankCards));
+        localStorage.setItem('users', JSON.stringify(users));
     }
 
     // Update the view with stored values
@@ -144,7 +162,7 @@ function updateBankCardsView(bankCards) {
         cardItem.className = 'card-item';
         cardItem.addEventListener("click", () => showBankCardInfo(index));
         cardItem.innerHTML = `
-                    <div class="card-details" >
+                    <div class="card-details">
                         <h5>${bankCard.bankCardName}</h5>
                         <p><strong>Account:</strong> **** **** **** ${bankCard.accountNumber.slice(-4)}</p>
                         <p><strong>Expires:</strong> ${bankCard.expiryDate}</p>
@@ -158,7 +176,6 @@ function updateBankCardsView(bankCards) {
 }
 
 function loadBankCardForm(index = -1) {
-    const bankCards = JSON.parse(localStorage.getItem('bankCards')) || [];
 
     // account number input formatter
     const accountNumberInput = document.getElementById("accountNumber");
@@ -219,7 +236,6 @@ function saveBankCard() {
         return;
     }
 
-    const bankCards = JSON.parse(localStorage.getItem('bankCards')) || [];
     const bankCardData = {
         bankCardName,
         accountNumber,
@@ -229,14 +245,14 @@ function saveBankCard() {
 
     if (index >= 0 && index < bankCards.length) {
         // Update existing bankCard
-        bankCards[index] = bankCardData;
+        user.bankCards[index] = bankCardData;
     } else {
         // Add new bankCard
-        bankCards.push(bankCardData);
+        user.bankCards.push(bankCardData);
     }
 
     // Save to localStorage
-    localStorage.setItem('bankCards', JSON.stringify(bankCards));
+    localStorage.setItem('users', JSON.stringify(users));
 
     // Update the view
     updateBankCardsView(bankCards);
@@ -248,7 +264,6 @@ function saveBankCard() {
 }
 
 function showBankCardInfo(index) {
-    const bankCards = JSON.parse(localStorage.getItem('bankCards')) || [];
     const bankCard = bankCards[index];
 
     if (!bankCard) return;
@@ -293,10 +308,9 @@ function showBankCardInfo(index) {
 
 function removeBankCard(index) {
     if (confirm('Are you sure you want to remove this bank card account?')) {
-        const bankCards = JSON.parse(localStorage.getItem('bankCards')) || [];
         if (index >= 0 && index < bankCards.length) {
             bankCards.splice(index, 1);
-            localStorage.setItem('bankCards', JSON.stringify(bankCards));
+            localStorage.setItem('users', JSON.stringify(users));
             updateBankCardsView(bankCards);
             alert('Bank Card account removed successfully!');
         }
@@ -304,13 +318,12 @@ function removeBankCard(index) {
     }
 }
 
+let addresses = user.addresses || [];
 // ADDRESS FUNCTIONS
-function initializeAddresses() {
-    let addresses = JSON.parse(localStorage.getItem('addresses'));
-
+function fetchAddresses() {
     if (!addresses) {
         addresses = [];
-        localStorage.setItem('addresses', JSON.stringify(addresses));
+        localStorage.setItem('users', JSON.stringify(users));
     }
 
     // Update the view with stored values
@@ -340,7 +353,6 @@ function updateAddressesView(addresses) {
 }
 
 function loadAddressForm(index = -1) {
-    const addresses = JSON.parse(localStorage.getItem('addresses')) || [];
 
     if (index >= 0 && index < addresses.length) {
         // Editing existing address
@@ -386,7 +398,6 @@ function saveAddress() {
         return;
     }
 
-    const addresses = JSON.parse(localStorage.getItem('addresses')) || [];
     const addressData = {
         title,
         addressLine1: address1,
@@ -399,14 +410,14 @@ function saveAddress() {
 
     if (index >= 0 && index < addresses.length) {
         // Update existing address
-        addresses[index] = addressData;
+        user.addresses[index] = addressData;
     } else {
         // Add new address
-        addresses.push(addressData);
+        user.addresses.push(addressData);
     }
 
     // Save to localStorage
-    localStorage.setItem('addresses', JSON.stringify(addresses));
+    localStorage.setItem('users', JSON.stringify(users));
 
     // Update the view
     updateAddressesView(addresses);
@@ -418,7 +429,6 @@ function saveAddress() {
 }
 
 function showAddressInfo(index) {
-    const addresses = JSON.parse(localStorage.getItem('addresses')) || [];
     const address = addresses[index];
 
     if (!address) return;
@@ -475,10 +485,9 @@ function showAddressInfo(index) {
 
 function removeAddress(index) {
     if (confirm('Are you sure you want to remove this address?')) {
-        const addresses = JSON.parse(localStorage.getItem('addresses')) || [];
         if (index >= 0 && index < addresses.length) {
             addresses.splice(index, 1);
-            localStorage.setItem('addresses', JSON.stringify(addresses));
+            localStorage.setItem('users', JSON.stringify(users));
             updateAddressesView(addresses);
             alert('Address removed successfully!');
         }
@@ -486,9 +495,7 @@ function removeAddress(index) {
     }
 }
 
-// password
-const isNewUser = true;
-
+// PASSWORD CHANGE FUNCTIONS
 const oldPasswordInput = document.getElementById("oldPassword");
 const newPasswordInput = document.getElementById("newPassword");
 const confirmPasswordInput = document.getElementById("confirmPassword");
@@ -500,6 +507,10 @@ const form = document.getElementById("passwordForm");
 form.addEventListener("submit", function (event) {
     event.preventDefault(); // Stop form from submitting immediately
 
+    if (oldPasswordInput.value !== user.password) {
+        alert("Old password is incorrect!");
+        return;
+    }
     const newPassword = newPasswordInput.value;
     const confirmPassword = confirmPasswordInput.value;
 
@@ -513,6 +524,8 @@ form.addEventListener("submit", function (event) {
             alert("New Password and Confirm Password do not match!");
             return;
         } else {
+            user.password = newPassword;
+            localStorage.setItem("users", JSON.stringify(users));
             alert("Password updated successfully!");
             form.submit(); // <-- only submit if valid
         }

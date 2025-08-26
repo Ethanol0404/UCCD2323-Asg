@@ -11,8 +11,10 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- bootstap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/main.css">    
     <link rel="stylesheet" type="text/css" href="css/dashboard.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <link rel="icon" type="image/x-icon" href="picture/favicon.ico">
 
 </head>
 
@@ -40,6 +42,14 @@
         </div>
         <div id="profile">
             <img src="picture/profile.png" alt="profile" width="45px" height="45px">
+        </div>
+        <div class="dropdown" id="profileDropdown">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </div>
+        <div class="dropdown" id="signDropdown">
+            <a href="register.html">Sign Up</a>
+            <a href="login.html">Sign In</a>
         </div>
     </div>
 
@@ -417,7 +427,7 @@
                                 <input type="password" class="form-control" id="confirmPassword"
                                     placeholder="Confirm password">
                             </div>
-                            <a href="">Forgot password</a>
+                            <a href="forgot.html">Forgot password</a>
 
                             <div class="d-flex justify-content-center my-3">
                                 <button type="submit" class="save-btn" id="savePasswordBtn">
@@ -432,6 +442,96 @@
                 </div>
             </div>
         </div>
+        <div class="filterCatContainer">
+
+            <div class="catSection">
+                <h1>Category</h1>
+                <ul class="catOptions">
+                    <li><a href="allProduct.html">All Products</a></li>
+                    <li><a href="allProduct.html#new">New Arrival</a></li>
+                    <li><a href="allProduct.html#best">Best Seller</a></li>
+                    <li><a href="allProduct.html#christ">Christmas Special</a></li>
+                    <li><a href="allProduct.html#snoopy">Snoopy is here</a></li>
+                    <li><a href="allProduct.html#access">Accessories</a></li>
+                </ul>
+            </div>
+            <div class="filterSection">
+                <h1>Filter</h1>
+                <div class="filterSub">
+                    <h2>Material</h2>
+                    <div class="checkboxGroup">
+                        <div class="checkboxOption">
+                            <input type="checkbox" id="glass">
+                            <label for="glass">Glass</label>
+                        </div>
+                        <div class="checkboxOption">
+                            <input type="checkbox" id="plastic">
+                            <label for="plastic">Plastic</label>
+                        </div>
+                        <div class="checkboxOption">
+                            <input type="checkbox" id="steel">
+                            <label for="steel">Steel</label>
+                        </div>
+                        <div class="checkboxOption">
+                            <input type="checkbox" id="cardboard">
+                            <label for="cardboard">Cardboard</label>
+                        </div>
+                        <div class="checkboxOption">
+                            <input type="checkbox" id="wooden">
+                            <label for="wooden">Wooden</label>
+                        </div>
+                        <div class="checkboxOption">
+                            <input type="checkbox" id="diamond">
+                            <label for="diamond">Diamond</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filterSub">
+                    <h2>Price Range</h2>
+                    <div class="priceInputContainer">
+                        <div class="priceInput">
+                            <div class="priceField">
+                                <span>Min</span>
+                                <input type="number" class="minInput" value="250">
+                            </div>
+                            <div class="priceField">
+                                <span>Max</span>
+                                <input type="number" class="maxInput" value="850">
+                            </div>
+                        </div>
+                        <div class="slider">
+                            <div class="priceSlider"></div>
+                        </div>
+                    </div>
+
+                    <div class="rangeInput">
+                        <input type="range" class="minRange" min="0" max="1000" value="250" step="1">
+                        <input type="range" class="maxRange" min="0" max="1000" value="850" step="1">
+                    </div>
+                </div>
+
+                <div class="filterSub">
+                    <h2>Pieces</h2>
+                    <div class="checkboxGroup">
+                        <div class="checkboxOption">
+                            <input type="checkbox" id="100-500">
+                            <label for="100-500">100-500 pieces</label>
+                        </div>
+                        <div class="checkboxOption">
+                            <input type="checkbox" id="500-1000">
+                            <label for="500-1000">500-1000 pieces</label>
+                        </div>
+                        <div class="checkboxOption">
+                            <input type="checkbox" id="1000+">
+                            <label for="1000+">1000+ pieces</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="overlay"></div>
     </main>
 
     <footer>
