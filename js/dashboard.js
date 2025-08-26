@@ -47,7 +47,7 @@ function fetchData() {
 }
 
 let users = JSON.parse(localStorage.getItem("users")) || [];
-const loggedInEmail = getCookie("loggedInUser");
+const loggedInEmail = getCookie("loggedInUser") || sessionStorage.getItem("loggedInUser");
 
 document.addEventListener('DOMContentLoaded', ()=> {
     if(!loggedInEmail) {
