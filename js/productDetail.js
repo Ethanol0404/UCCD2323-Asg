@@ -13,7 +13,7 @@ const relatedProductsContainer = document.getElementById('relatedProducts');
 // Load product data from JSON file
 async function loadProductData() {
     try {
-        const response = await fetch('js/productInfo.json');
+        const response = await fetch('js/productInfo2.json');
         if (!response.ok) {
             throw new Error('Failed to load products data');
         }
@@ -230,7 +230,7 @@ function formatPrice(price) {
 
 function showAlert(type, message) {
     // Implement your alert/notification system here
-    console.log(`${type}: ${message}`);
+    alert(`${type}: ${message}`);
 }
 
 // share and wishList
@@ -286,6 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
 //         setTimeout(() => message.remove(), 300); // remove from DOM after fade
 //     }, 1500); // message stays for 1.5s
 // });
+
 //product tab
 const tabBtns = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
@@ -301,32 +302,6 @@ tabBtns.forEach((btn, index) => {
         tabContents[index].classList.add('active');
     });
 });
-
-//testing
-const cartBtn = document.getElementById("cartIcon")
-cartBtn.addEventListener('click', function () {
-    console.log('Clicked');
-    console.log(document.getElementById('signInUp')); // Should log the element
-    console.log(document.getElementById('cart')); // Should log the element
-    document.getElementById('signInUp').classList.toggle('hidden');
-    document.getElementById('cart').classList.toggle('hidden');
-
-
-});
-// const signInBtn = document.getElementById("signIn")
-// signInBtn.addEventListener('click', function () {
-//     console.log('Clicked');
-//     document.getElementById('signInUp').classList.toggle('hidden');
-//     document.getElementById('cart').classList.toggle('hidden');
-
-// });
-
-
-// const priceRange = document.querySelector('.price-range');
-// const sliderValue = document.querySelector('.slider-value')
-// priceRange.addEventListener('input', function () {
-//     sliderValue.textContent = this.value;
-// });
 
 // Quantity control functionality
 document.querySelector('.minus').addEventListener('click', function () {
@@ -345,13 +320,58 @@ document.querySelector('.plus').addEventListener('click', function () {
     }
 });
 
+let users = JSON.parse(localStorage.getItem("users")) || [];
+const loggedInEmail = getCookie("loggedInUser") || sessionStorage.getItem("loggedInUser");
 
-// // Filter category selection
-// const categoryItems = document.querySelectorAll('.filter-options li');
-// categoryItems.forEach(item => {
-//     item.addEventListener('click', function () {
-//         categoryItems.forEach(i => i.classList.remove('active'));
-//         this.classList.add('active');
-//     });
-// });
+// Find current logged-in user
+let user = users.find(u => u.email === loggedInEmail);
 
+document.querySelector('.add-to-cart').addEventListener('click', function () {
+
+    if(!user) {
+        alert("Please login before adding to cart!");
+        return;
+    }
+
+    const input = document.querySelector('.quantity-input');
+    let qty = parseInt(input.value) || 1;
+    if (qty > currentStock) {
+        qty = currentStock; // Limit to available stock
+    }
+    if (qty < 1) {
+        qty = 1; // Minimum quantity is 1
+    }
+    input.value = qty;
+
+    // Add to cart logic
+    const productId = getProductIdFromUrl();
+    const product = productsData.find(p => p.id === productId);
+    if (!product) {
+        showAlert('danger', 'Product not found');
+        return;
+    }
+
+    let cart = user.cart || [];
+    const existingItem = cart.find(item => item.id === product.id);
+    if (existingItem) {
+        existingItem.qty += qty;
+        console.log("Existing item quantity:", existingItem.qty);
+        
+        if (existingItem.qty > currentStock) {
+            existingItem.qty = currentStock; // Limit to stock
+            showAlert('warning', `Only ${currentStock} items available. Quantity adjusted.`);
+        } else {
+            showAlert('success', 'Quantity updated in cart');
+        }
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            qty: qty,
+            img: product.images[0] // Use first image as thumbnail
+        });
+        showAlert('success', 'Added to cart');
+    }
+    localStorage.setItem('users', JSON.stringify(users));
+});
