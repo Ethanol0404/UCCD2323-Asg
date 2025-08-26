@@ -116,7 +116,6 @@ backToTopButton.addEventListener('click', (e) => {
     });
 });
 
-
 // Initialize the page when loaded
 document.addEventListener('DOMContentLoaded', async () => {
     await loadProductData(); // ensures products are loaded and rendered
