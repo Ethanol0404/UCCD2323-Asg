@@ -12,12 +12,12 @@
 </head>
 
 <body>
-    <div class="header">
+     <div class="header">
         <div class="menu">
             <img id="menuIcon" src="picture/menu.png" alt="menu" width="40px" height="40px">
         </div>
         <div class="logo">
-            <img id="logoIcon" src="picture/logo2c.png" alt="logo" width="145px" height="75px">
+            <a href="index.html"><img id="logoIcon" src="picture/logo2c.png" alt="logo" width="145px" height="75px"></a>
         </div>
         <div class="navBar">
             <a href="aboutUs.html">About Us</a>
@@ -30,12 +30,19 @@
             <img id="magGlassIcon" src="picture/magGlass.png" alt="magGlass" width="25px" height="25px">
             <input id="search" type="text" placeholder="search for product">
         </div>
-
         <div id="cart">
-            <img id="cartIcon" src="picture/cart.png" alt="cart" width="45px" height="45px">
+            <a href="cart.html"><img id="cartIcon" src="picture/cart.png" alt="cart" width="45px" height="45px"></a>
         </div>
         <div id="profile">
             <img src="picture/profile.png" alt="profile" width="45px" height="45px">
+        </div>
+        <div class="dropdown" id="profileDropdown">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </div>
+        <div class="dropdown" id="signDropdown">
+            <a href="register.html">Sign Up</a>
+            <a href="login.html">Sign In</a>
         </div>
     </div>
 

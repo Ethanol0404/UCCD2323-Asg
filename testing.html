@@ -1,270 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shopping Cart with Select</title>
-
-  <style>
-body {
-  font-family: 'Times New Roman', Times, serif, sans-serif;
-  background: #f9f9f9;
-  margin: 0;
-  padding: 20px;
-}
-
-/* Container */
-.cart-container {
-  max-width: 1000px;
-  margin: auto;
-  padding: 20px;
-}
-
-/* Title */
-h2 {
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 28px;
-  color: #333;
-}
-
-/* Table */
-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 12px; /* gap between rows */
-  text-align: center;
-}
-
-/* Table head */
-thead {
-  background: #f8d76e;
-}
-
-thead tr {
-  border-radius: 12px;
-}
-
-thead th {
-  padding: 14px;
-  font-weight: bold;
-}
-
-thead th:first-child {
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
-}
-
-thead th:last-child {
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-}
-
-/* Column widths */
-thead th:nth-child(2),
-tbody td:nth-child(2) {
-  width: 300px; /* Product column */
-}
-
-thead th,
-tbody td {
-  width: 120px; /* Other columns */
-}
-
-tbody tr {
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  border-radius: 12px;   /* rounded corners for the whole row */
-  overflow: hidden;      /* keep corners clean */
-}
-
-/* Table body cells */
-tbody td {
-  padding: 12px;
-  vertical-align: middle;
-  text-align: center;
-}
-
-/* Optional: first & last cells spacing fix */
-tbody td:first-child {
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
-}
-tbody td:last-child {
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-}
-
-/* Product cell */
-.product {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  justify-content: flex-start;
-}
-
-.product img {
-  width: 70px;
-  height: 70px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-/* Quantity */
-.quantity input {
-  width: 55px;
-  text-align: center;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-/* Remove button */
-.remove-btn {
-  background: #ff4d4d;
-  border: none;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.remove-btn:hover {
-  background: #d93636;
-}
-
-/* Cart summary */
-.cart-summary {
-  text-align: right;
-  margin-top: 20px;
-}
-
-.cart-summary h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.checkout-btn {
-  background: #ff9b29;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s;
-}
-
-.checkout-btn:hover {
-  background: #bc6b14;
-}
-
-/* Empty message */
-#emptyMessage {
-  display: none;
-  text-align: center;
-  font-size: 20px;
-  color: #666;
-  margin: 30px 0;
-}
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Planet - Custom Puzzle Options</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4e54c8;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4e54c8;
+            margin-bottom: 15px;
+        }
+        
+        .logo i {
+            font-size: 32px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        h2 {
+            color: #4e54c8;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            color: #666;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .puzzle-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 16px;
+            min-width: 600px;
+            overflow-x: auto;
+        }
+        
+        .puzzle-table thead tr {
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: white;
+            text-align: left;
+        }
+        
+        .puzzle-table th,
+        .puzzle-table td {
+            padding: 16px 20px;
+            text-align: center;
+        }
+        
+        .puzzle-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+        
+        .puzzle-table tbody tr:nth-of-type(even) {
+            background-color: #f5f7ff;
+        }
+        
+        .puzzle-table tbody tr:last-of-type {
+            border-bottom: 3px solid #4e54c8;
+        }
+        
+        .puzzle-table tbody tr:hover {
+            background-color: #e9ecff;
+        }
+        
+        .highlight {
+            font-weight: 600;
+            color: #4e54c8;
+        }
+        
+        .note {
+            background-color: #fff8e6;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #4e54c8;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #3f44b5;
+            transform: translateY(-2px);
+        }
+        
+        .action-cell {
+            display: flex;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .puzzle-table {
+                font-size: 14px;
+            }
+            
+            .puzzle-table th,
+            .puzzle-table td {
+                padding: 12px 15px;
+            }
+            
+            .logo h1 {
+                font-size: 24px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .puzzle-table {
+                min-width: 100%;
+            }
+            
+            .puzzle-table thead {
+                display: none;
+            }
+            
+            .puzzle-table, .puzzle-table tbody, .puzzle-table tr, .puzzle-table td {
+                display: block;
+                width: 100%;
+            }
+            
+            .puzzle-table tr {
+                margin-bottom: 20px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 10px;
+            }
+            
+            .puzzle-table td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .puzzle-table td:last-child {
+                border-bottom: none;
+            }
+            
+            .puzzle-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: calc(50% - 20px);
+                padding-right: 20px;
+                text-align: left;
+                font-weight: bold;
+                color: #4e54c8;
+            }
+            
+            .action-cell {
+                justify-content: flex-end;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="cart-container">
-    <h2>Your Cart</h2>
-
-    <p id="emptyMessage">Your cart is empty!</p>
-
-    <table id="cartTable">
-    <thead>
-        <tr>
-        <th><input type="checkbox" id="selectAll"></th>
-        <th>Product</th>
-        <th>Unit Price</th>
-        <th>Quantity</th>
-        <th>Total</th>
-        <th>Remove</th>
-        </tr>
-    </thead>
-    <tbody id="cartBody"></tbody>
-    </table>
-
-    <div class="cart-summary">
-      <h3>Total: $55.00</h3>
-      <button class="checkout-btn">Proceed to Checkout</button>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-puzzle-piece"></i>
+                <h1>Puzzle Planet</h1>
+            </div>
+            <h2>Custom Puzzle Options</h2>
+            <p class="description">Choose from our premium Showpiece puzzle collection</p>
+        </header>
+        
+        <table class="puzzle-table">
+            <thead>
+                <tr>
+                    <th>Puzzle</th>
+                    <th>Pieces</th>
+                    <th>Dimension</th>
+                    <th>Price</th>
+                    <th>Minimum Resolution</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Puzzle">Showpiece 300</td>
+                    <td data-label="Pieces">300</td>
+                    <td data-label="Dimension">30.8 x 23.8cm</td>
+                    <td data-label="Price" class="highlight">RM200</td>
+                    <td data-label="Minimum Resolution">3,174 x 2,351px</td>
+                    <td data-label="Action" class="action-cell"><button class="btn">Select</button></td>
+                </tr>
+                <tr>
+                    <td data-label="Puzzle">Showpiece 500</td>
+                    <td data-label="Pieces">500</td>
+                    <td data-label="Dimension">37.8 x 30.8cm</td>
+                    <td data-label="Price" class="highlight">RM250</td>
+                    <td data-label="Minimum Resolution">3,779 x 3,174px</td>
+                    <td data-label="Action" class="action-cell"><button class="btn">Select</button></td>
+                </tr>
+                <tr>
+                    <td data-label="Puzzle">Showpiece 1000</td>
+                    <td data-label="Pieces">1,000</td>
+                    <td data-label="Dimension">58.8 x 37.8cm</td>
+                    <td data-label="Price" class="highlight">RM360</td>
+                    <td data-label="Minimum Resolution">6,465 x 3,995px</td>
+                    <td data-label="Action" class="action-cell"><button class="btn">Select</button></td>
+                </tr>
+                <tr>
+                    <td data-label="Puzzle">Showpiece 1200</td>
+                    <td data-label="Pieces">1,200</td>
+                    <td data-label="Dimension">58.8 x 44.6cm</td>
+                    <td data-label="Price" class="highlight">RM410</td>
+                    <td data-label="Minimum Resolution">6,479 x 4,830px</td>
+                    <td data-label="Action" class="action-cell"><button class="btn">Select</button></td>
+                </tr>
+                <tr>
+                    <td data-label="Puzzle">Showpiece 2000</td>
+                    <td data-label="Pieces">2,000</td>
+                    <td data-label="Dimension">72.8 x 58.8cm</td>
+                    <td data-label="Price" class="highlight">RM520</td>
+                    <td data-label="Minimum Resolution">8,129 x 6,460px</td>
+                    <td data-label="Action" class="action-cell"><button class="btn">Select</button></td>
+                </tr>
+                <tr>
+                    <td data-label="Puzzle">Showpiece 4000</td>
+                    <td data-label="Pieces">4,000</td>
+                    <td data-label="Dimension">115.0 x 73.0cm</td>
+                    <td data-label="Price" class="highlight">RM980</td>
+                    <td data-label="Minimum Resolution">13,017 x 8,131px</td>
+                    <td data-label="Action" class="action-cell"><button class="btn">Select</button></td>
+                </tr>
+                <tr>
+                    <td data-label="Puzzle">Showpiece XS</td>
+                    <td data-label="Pieces">150</td>
+                    <td data-label="Dimension">10.2 x 7.6cm</td>
+                    <td data-label="Price" class="highlight">RM180</td>
+                    <td data-label="Minimum Resolution">1,225 x 925px</td>
+                    <td data-label="Action" class="action-cell"><button class="btn">Select</button></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="note">
+            <p><strong>Note:</strong> For best results, please ensure your image meets the minimum resolution requirements. Higher resolution images will produce better print quality.</p>
+        </div>
     </div>
-  </div>
 
-  <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const selectAllCheckbox = document.getElementById("selectAll");
-    const rowCheckboxes = document.querySelectorAll(".row-checkbox");
-    const quantityInputs = document.querySelectorAll(".quantity input");
-    const removeButtons = document.querySelectorAll(".remove-btn");
-    const totalElement = document.querySelector(".cart-summary h3");
-
-    // Update cart total
-    function updateCartTotal() {
-      let total = 0;
-      const rows = document.querySelectorAll("tbody tr");
-
-      rows.forEach(row => {
-        const checkbox = row.querySelector(".row-checkbox");
-        const priceElement = row.querySelector("td:nth-child(3)");
-        const quantityInput = row.querySelector(".quantity input");
-        const totalCell = row.querySelector("td:nth-child(5)");
-
-        const price = parseFloat(priceElement.textContent.replace("$", ""));
-        const quantity = parseInt(quantityInput.value);
-        const rowTotal = price * quantity;
-
-        totalCell.textContent = `$${rowTotal.toFixed(2)}`;
-
-        if (checkbox.checked) total += rowTotal;
-      });
-
-      totalElement.textContent = `Total: $${total.toFixed(2)}`;
-    }
-
-    // Quantity change
-    quantityInputs.forEach(input => {
-      input.addEventListener("change", function() {
-        if (this.value < 1) this.value = 1;
-        updateCartTotal();
-      });
-    });
-
-    // Remove product
-    removeButtons.forEach(btn => {
-      btn.addEventListener("click", function() {
-        this.closest("tr").remove();
-        updateCartTotal();
-      });
-    });
-
-    // Select all
-    selectAllCheckbox.addEventListener("change", function() {
-      rowCheckboxes.forEach(cb => cb.checked = this.checked);
-      updateCartTotal();
-    });
-
-    // Row checkbox change
-    rowCheckboxes.forEach(cb => {
-      cb.addEventListener("change", function() {
-        if (!this.checked) {
-          selectAllCheckbox.checked = false;
-        } else if (document.querySelectorAll(".row-checkbox:checked").length === rowCheckboxes.length) {
-          selectAllCheckbox.checked = true;
-        }
-        updateCartTotal();
-      });
-    });
-
-    // Initial calculation
-    updateCartTotal();
-  });
-  </script>
+    <script>
+        // Simple JavaScript to handle selection
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const puzzleName = this.closest('tr').querySelector('td:first-child').textContent;
+                alert(`You've selected ${puzzleName}! This would typically open a customization dialog.`);
+            });
+        });
+    </script>
 </body>
 </html>
