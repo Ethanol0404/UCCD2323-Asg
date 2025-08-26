@@ -1,10 +1,4 @@
-const menuBtn = document.getElementById("menuIcon")
-menuBtn.addEventListener('click', function () {
-    console.log('Clicked');
-    document.getElementById('filter-container').classList.toggle('show');
-
-});
-
+window.productsData = [];
 // Load product data
 const productImagesContainer = document.getElementById('productImages');
 const productNameElement = document.getElementById('product-name');
@@ -15,7 +9,6 @@ const includesContent = document.getElementById('includes');
 const stockAvailability = document.getElementById('stockAvailability');
 let currentStock = 0;
 const relatedProductsContainer = document.getElementById('relatedProducts');
-let productsData = []; // This will store our loaded products
 
 // Load product data from JSON file
 async function loadProductData() {
@@ -32,15 +25,16 @@ async function loadProductData() {
     }
 }
 
-function loadProduct(productId) {
+window.loadProduct = function(productId) {
     const product = productsData.find(p => p.id === productId);
     if (!product) {
-        showAlert('danger', 'Product not found');
+        alert('Product not found');
         return;
     }
-
+    console.log("Loaded product:", product.name);
     // Update main product info
     productNameElement.textContent = product.name;
+    console.log("Product price:", product.name);
     productPriceElement.textContent = formatPrice(product.price);
     productDescElement.textContent = product.description;
     stockAvailability.textContent = `${product.stock} items available`;
@@ -86,7 +80,43 @@ function loadProduct(productId) {
     // Load related products (excluding current product)
     loadRelatedProducts(productId, product.category);
 }
+function createProductCard(product) {
+    const productElement = document.createElement('div');
+    productElement.className = 'related-product'; // can rename to 'product-card'
 
+    productElement.innerHTML = `
+        <img id="related-img" src="${product.images[0]}" alt="${product.name}" width="200" height="200" loading="lazy">
+        <p id="related-product-name">${product.name}</p>
+        <p id="related-price">${formatPrice(product.price)}</p>
+        <div id="related-details">
+            <div>
+                <img src="picture/productDetail/puzzle-piece.png" alt="puzzle" width="25" height="25">
+                <span>Pieces: </span>
+                <p>${product.details.pieces}</p>
+            </div>
+            <div>
+                <img src="picture/productDetail/material.png" alt="material" width="25" height="25">
+                <span>Materials: </span>
+                <p>${product.details.material}</p>
+            </div>
+            <div>
+                <img src="picture/productDetail/maximize.png" alt="maximize" width="25" height="25">
+                <span>Size: </span>
+                <p>${product.details.size}</p>
+            </div>
+        </div>
+    `;
+
+    productElement.addEventListener('click', () => {
+        window.scrollTo(0, 0);
+        const productContainer = document.querySelector('.product-container-2');
+        if (productContainer) productContainer.scrollTop = 0;
+
+        window.history.pushState({}, '', `productDetail.html?id=${product.id}`);
+        loadProduct(product.id);
+    });
+    return productElement;
+}
 // Load related products
 function loadRelatedProducts(currentProductId) {
     relatedProductsContainer.innerHTML = '';
@@ -101,41 +131,8 @@ function loadRelatedProducts(currentProductId) {
 
     // Create product elements
     productsToShow.forEach(product => {
-        const productElement = document.createElement('div');
-        productElement.className = 'related-product';
-        productElement.innerHTML = `
-            <img id="related-img" src="${product.images[0]}" alt="${product.name}" width="200" height="200" loading="lazy">
-            <p id="related-productName">${product.name}</p>
-            <p id="related-price">${formatPrice(product.price)}</p>
-            <div id="related-details">
-                <div>
-                    <img src="picture/productDetail/puzzle-piece.png" alt="puzzle" width="25" height="25">
-                    <span>Pieces: </span>
-                    <p>${product.details.pieces}</p>
-                </div>
-                <div>
-                    <img src="picture/productDetail/material.png" alt="material" width="25" height="25">
-                    <span>Materials: </span>
-                    <p>${product.details.material}</p>
-                </div>
-                <div>
-                    <img src="picture/productDetail/maximize.png" alt="maximize" width="25" height="25">
-                    <span>Size: </span>
-                    <p>${product.details.size}</p>
-                </div>
-            </div>
-        `;
-
-        productElement.addEventListener('click', () => {
-            window.scrollTo(0, 0);
-            const productContainer = document.querySelector('.product-container-2');
-            if (productContainer) productContainer.scrollTop = 0;
-
-            window.history.pushState({}, '', `productDetail.html?id=${product.id}`);
-            loadProduct(product.id);
-        });
-
-        relatedProductsContainer.appendChild(productElement);
+        const card = createProductCard(product);
+        relatedProductsContainer.appendChild(card);
     });
 
     setupRelatedList();
@@ -212,7 +209,9 @@ function setupRelatedList() {
 document.addEventListener('DOMContentLoaded', async () => {
     await loadProductData();
     const productId = getProductIdFromUrl();
-    loadProduct(productId);
+     if (productId) {
+        loadProduct(productId);
+    }
 
     document.getElementById('cartIcon')?.addEventListener('click', () => {
         window.location.href = 'cart.html';
@@ -249,44 +248,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-const wishList = document.querySelector(".wishList");
-let wish = false;
-wishList.addEventListener('click', function () {
-    wish = !wish; //false become true, true become false
-    if (wish) {
-        wishList.src = "picture/productDetail/redHeart.png";
-    } else {
-        wishList.src = "picture/productDetail/heart.png";
-    }
-    // Add animation
-    wishList.classList.add('pop');
+// const wishList = document.querySelector(".wishList");
+// let wish = false;
+// wishList.addEventListener('click', function () {
+//     wish = !wish; //false become true, true become false
+//     if (wish) {
+//         wishList.src = "picture/productDetail/redHeart.png";
+//     } else {
+//         wishList.src = "picture/productDetail/heart.png";
+//     }
+//     // Add animation
+//     wishList.classList.add('pop');
 
-    // Remove animation class after it runs
-    setTimeout(() => {
-        wishList.classList.remove('pop');
-    }, 300);
+//     // Remove animation class after it runs
+//     setTimeout(() => {
+//         wishList.classList.remove('pop');
+//     }, 300);
 
-    //messeage
-    const message = document.createElement("div");
-    message.className = "wishlist-message";
-    if (wish) {
-        message.textContent = "Added to wish list";
-    } else {
-        message.textContent = "Removed from wish list";
-    }
-    document.body.appendChild(message);
+//     //messeage
+//     const message = document.createElement("div");
+//     message.className = "wishlist-message";
+//     if (wish) {
+//         message.textContent = "Added to wish list";
+//     } else {
+//         message.textContent = "Removed from wish list";
+//     }
+//     document.body.appendChild(message);
 
 
-    // Show & fade out
-    setTimeout(() => {
-        message.classList.add("show");
-    }, 10); // small delay so CSS transition works
+//     // Show & fade out
+//     setTimeout(() => {
+//         message.classList.add("show");
+//     }, 10); // small delay so CSS transition works
 
-    setTimeout(() => {
-        message.classList.remove("show");
-        setTimeout(() => message.remove(), 300); // remove from DOM after fade
-    }, 1500); // message stays for 1.5s
-});
+//     setTimeout(() => {
+//         message.classList.remove("show");
+//         setTimeout(() => message.remove(), 300); // remove from DOM after fade
+//     }, 1500); // message stays for 1.5s
+// });
 //product tab
 const tabBtns = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
