@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
             dob: "",
             // arrays for addresses & cards
             addresses: [],
-            bankCards: []
+            bankCards: [],
+            cart: []
         };
 
         users.push(newUser);
