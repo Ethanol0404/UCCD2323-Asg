@@ -31,7 +31,7 @@ profileIcon.addEventListener("click", () => {
     signDropdown.classList.toggle("show");
   }
 });
-
+//prodile
 document.addEventListener("click", (e) => {
   if (!profileIcon.contains(e.target) &&
     !profileDropdown.contains(e.target) &&
@@ -46,7 +46,7 @@ document.addEventListener("click", (e) => {
     });
   }
 });
-
+//profile dropdown
 function attachObserver(dropdown) {
   const observer = new MutationObserver(() => {
     if (dropdown.classList.contains("show")) {
@@ -67,95 +67,259 @@ const menuBtn = document.getElementById("menuIcon");
 const filterContainer = document.querySelector(".filterCatContainer");
 const overlay = document.querySelector(".overlay");
 
+const rangevalue = document.querySelector(".slider .priceSlider");
+const rangeInputvalue = document.querySelectorAll(".rangeInput input");
+const priceInputvalue = document.querySelectorAll(".priceInput input");
+
+let priceGap = 50;
+
+// Keep track of current filter state
+let currentFilters = {
+  min: 0,
+  max: 1000,
+  materials: [],
+  pieces: []
+};
+
+// Function to update current filters from checkboxes
+function updateCurrentFilters() {
+  // Materials checkboxes
+  currentFilters.materials = Array.from(
+    document.querySelectorAll("[data-filter='material'] input:checked")
+  ).map(cb => cb.id);
+
+  // Pieces checkboxes
+  currentFilters.pieces = Array.from(
+    document.querySelectorAll("[data-filter='pieces'] input:checked")
+  ).map(cb => cb.id);
+}
+
+// Add event listeners for material checkboxes
+function attachMaterialCheckboxListeners() {
+  const materialCheckboxes = document.querySelectorAll("[data-filter='material'] input[type='checkbox']");
+  materialCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', updateCurrentFilters);
+  });
+}
+
+// Add event listeners for pieces checkboxes
+function attachPiecesCheckboxListeners() {
+  const piecesCheckboxes = document.querySelectorAll("[data-filter='pieces'] input[type='checkbox']");
+  piecesCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', updateCurrentFilters);
+  });
+}
+
+// --- MENU OPEN/CLOSE ---
 menuBtn.addEventListener("click", () => {
   filterContainer.classList.toggle("show");
   overlay.classList.toggle("show");
 });
 
-// Close when clicking overlay
+// --- OVERLAY CLICK: close + apply ---
 overlay.addEventListener("click", () => {
   filterContainer.classList.remove("show");
   overlay.classList.remove("show");
+  redirectWithPrice(currentFilters.min, currentFilters.max);
 });
 
-/* filter price range */
-const rangevalue = document.querySelector(".slider .priceSlider");
-const rangeInputvalue = document.querySelectorAll(".rangeInput input");
+// --- REDIRECT HELPER ---
+function redirectWithPrice(min, max) {
+  let params = new URLSearchParams();
+  
+  // Preserve existing search query if present
+  const currentSearchQuery = new URLSearchParams(window.location.search).get("q");
+  if (currentSearchQuery) {
+    params.set("q", currentSearchQuery);
+    console.log("Preserving search query:", currentSearchQuery);
+  }
+  
+  params.set("min", min);
+  params.set("max", max);
 
-let priceGap = 50;
+  if (currentFilters.materials.length > 0) {
+    params.set("material", currentFilters.materials.join(","));
+  }
 
-const priceInputvalue = document.querySelectorAll(".priceInput input");
+  if (currentFilters.pieces.length > 0) {
+    params.set("pieces", currentFilters.pieces.join(","));
+  }
+
+  console.log("Redirecting with params:", params.toString());
+  
+  // redirect
+  window.location.href = "search.html?" + params.toString();
+}
+
+// --- PRICE INPUT BOXES ---
 for (let i = 0; i < priceInputvalue.length; i++) {
   priceInputvalue[i].addEventListener("input", e => {
+    let minp = parseInt(priceInputvalue[0].value) || 0;
+    let maxp = parseInt(priceInputvalue[1].value) || 1000;
 
-    let minp = parseInt(priceInputvalue[0].value);
-    let maxp = parseInt(priceInputvalue[1].value);
-    let diff = maxp - minp
+    if (minp < 0) minp = 0;
+    if (maxp > 1000) maxp = 1000;
+    if (minp > maxp - priceGap) minp = maxp - priceGap;
 
-    if (minp < 0) {
-      alert("minimum price cannot be less than 0");
-      priceInputvalue[0].value = 0;
-      minp = 0;
-    }
+    currentFilters.min = minp;
+    currentFilters.max = maxp;
 
-    if (maxp > 1000) {
-      alert("maximum price cannot be greater than 1000");
-      priceInputvalue[1].value = 1000;
-      maxp = 1000;
-    }
+    // update slider visuals only
+    rangeInputvalue[0].value = minp;
+    rangeInputvalue[1].value = maxp;
+    rangevalue.style.left = `${(minp / rangeInputvalue[0].max) * 100}%`;
+    rangevalue.style.right = `${100 - (maxp / rangeInputvalue[1].max) * 100}%`;
+  });
+}
 
-    if (minp > maxp - priceGap) {
-      priceInputvalue[0].value = maxp - priceGap;
-      minp = maxp - priceGap;
+// --- SLIDER RANGES ---
+for (let i = 0; i < rangeInputvalue.length; i++) {
+  rangeInputvalue[i].addEventListener("input", e => {
+    let minVal = parseInt(rangeInputvalue[0].value);
+    let maxVal = parseInt(rangeInputvalue[1].value);
 
-      if (minp < 0) {
-        priceInputvalue[0].value = 0;
-        minp = 0;
-      }
-    }
+    if (maxVal - minVal < priceGap) return;
 
-    if (diff >= priceGap && maxp <= rangeInputvalue[1].max) {
-      if (e.target.className === "min-input") {
-        rangeInputvalue[0].value = minp;
-        let value1 = rangeInputvalue[0].max;
-        rangevalue.style.left = `${(minp / value1) * 100}%`;
-      }
-      else {
-        rangeInputvalue[1].value = maxp;
-        let value2 = rangeInputvalue[1].max;
-        rangevalue.style.right = `${100 - (maxp / value2) * 100}%`;
-      }
-    }
+    currentFilters.min = minVal;
+    currentFilters.max = maxVal;
+
+    priceInputvalue[0].value = minVal;
+    priceInputvalue[1].value = maxVal;
+    rangevalue.style.left = `${(minVal / rangeInputvalue[0].max) * 100}%`;
+    rangevalue.style.right = `${100 - (maxVal / rangeInputvalue[1].max) * 100}%`;
+  });
+}
+
+// Filter initialization moved to DOMContentLoaded event
+
+// --- APPLY BUTTON ---
+document.getElementById("applyFiltersBtn").addEventListener("click", () => {
+  redirectWithPrice(currentFilters.min, currentFilters.max);
+});
+
+// --- RESET FILTERS BUTTON ---
+document.getElementById("resetFiltersBtn").addEventListener("click", () => {
+  resetAllFilters();
+});
+
+// Function to reset all filters to default values
+function resetAllFilters() {
+  // Reset current filters
+  currentFilters.min = 0;
+  currentFilters.max = 1000;
+  currentFilters.materials = [];
+  currentFilters.pieces = [];
+
+  // Reset price inputs
+  const minInput = document.querySelector(".minInput");
+  const maxInput = document.querySelector(".maxInput");
+  if (minInput) minInput.value = 0;
+  if (maxInput) maxInput.value = 1000;
+
+  // Reset range sliders
+  const minRange = document.querySelector(".minRange");
+  const maxRange = document.querySelector(".maxRange");
+  if (minRange) minRange.value = 0;
+  if (maxRange) maxRange.value = 1000;
+
+  // Reset price slider visual
+  const rangevalue = document.querySelector(".slider .priceSlider");
+  if (rangevalue) {
+    rangevalue.style.left = "0%";
+    rangevalue.style.right = "0%";
+  }
+
+  // Uncheck all material checkboxes
+  const materialCheckboxes = document.querySelectorAll("[data-filter='material'] input[type='checkbox']");
+  materialCheckboxes.forEach(checkbox => {
+    checkbox.checked = false;
   });
 
-  for (let i = 0; i < rangeInputvalue.length; i++) {
-    rangeInputvalue[i].addEventListener("input", e => {
-      let minVal = parseInt(rangeInputvalue[0].value);
-      let maxVal = parseInt(rangeInputvalue[1].value);
+  // Uncheck all pieces checkboxes
+  const piecesCheckboxes = document.querySelectorAll("[data-filter='pieces'] input[type='checkbox']");
+  piecesCheckboxes.forEach(checkbox => {
+    checkbox.checked = false;
+  });
 
-      let diff = maxVal - minVal
+  console.log("All filters have been reset to default values");
+}
 
-      if (diff < priceGap) {
+//searchbar 
+$("#search").on("keypress", function (e) {
+  if (e.which === 13) { // 13 = Enter key
+    const query = $(this).val().trim();
+    if (query) {
+      // Redirect to search.html with query in URL
+      window.location.href = "search.html?q=" + encodeURIComponent(query);
+    }
+  }
+});
 
-        if (e.target.className === "minRange") {
-          rangeInputvalue[0].value = maxVal - priceGap;
-        }
-        else {
-          rangeInputvalue[1].value = minVal + priceGap;
-        }
-      }
-      else {
+// Handle search input changes to show/hide clear button
+$("#search").on("input", function() {
+  const query = $(this).val().trim();
+  const clearBtn = document.getElementById("clearSearchBtn");
+  
+  if (clearBtn) {
+    if (query) {
+      clearBtn.style.display = "flex";
+    } else {
+      clearBtn.style.display = "none";
+    }
+  }
+});
 
-        priceInputvalue[0].value = minVal;
-        priceInputvalue[1].value = maxVal;
-        rangevalue.style.left = `${(minVal / rangeInputvalue[0].max) * 100}%`;
-        rangevalue.style.right = `${100 - (maxVal / rangeInputvalue[1].max) * 100}%`;
-      }
-    });
+// Clear search button functionality
+document.getElementById("clearSearchBtn").addEventListener("click", () => {
+  clearSearch();
+});
+
+// Function to clear search and redirect to search page without query
+function clearSearch() {
+  // Get current URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  // Remove search query but keep other parameters (filters)
+  urlParams.delete("q");
+  
+  // Redirect to search page with remaining parameters
+  const newUrl = urlParams.toString() ? `search.html?${urlParams.toString()}` : "search.html";
+  window.location.href = newUrl;
+}
+
+// Function to update search bar with current query
+function updateSearchBar() {
+  const searchInput = document.getElementById("search");
+  const clearBtn = document.getElementById("clearSearchBtn");
+  
+  if (!searchInput || !clearBtn) return;
+  
+  // Get current search query from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const currentQuery = urlParams.get("q");
+  
+  if (currentQuery) {
+    // Show current search query in search bar
+    searchInput.value = currentQuery;
+    
+    // Show clear button
+    clearBtn.style.display = "flex";
+  } else {
+    // Clear search bar and hide clear button
+    searchInput.value = "";
+    clearBtn.style.display = "none";
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Update search bar with current query
+  updateSearchBar();
+  
+  // Initialize filters and attach listeners
+  updateCurrentFilters();
+  attachMaterialCheckboxListeners();
+  attachPiecesCheckboxListeners();
+
   // Get users and logged-in user
   let users = JSON.parse(localStorage.getItem("users")) || [];
   const loggedInEmail = getCookie("loggedInUser") || sessionStorage.getItem("loggedInUser");

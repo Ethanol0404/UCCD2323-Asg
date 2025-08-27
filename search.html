@@ -7,12 +7,13 @@
     <title>All Products-PickPuzz</title>
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/allProducts.css">
+    <link rel="stylesheet" type="text/css" href="css/search.css">
     <link rel="icon" type="image/x-icon" href="picture/favicon.ico">
 
 </head>
 
 <body>
-        <div class="header">
+    <div class="header">
         <div class="menu">
             <img id="menuIcon" src="picture/menu.png" alt="menu" width="40px" height="40px">
         </div>
@@ -52,18 +53,8 @@
     <!-- main content -->
     <div class="mainContainer">
 
-        <!-- All Products (only shown on allProducts.html) -->
-        <div id="categoriesContainer">
-            <!-- categories will be rendered here -->
-        </div>
+        <div id="resultsContainer"></div>
 
-        <!-- Related Products (only shown on productDetail.html) -->
-        <div class="related-container-2" id="relatedProducts">
-            <!-- related products will be rendered here -->
-        </div>
-
-        <!-- Back to top button -->
-        <button id="backToTopBtn" class="btn">Back to top</button>
 
     </div>
 
@@ -83,7 +74,7 @@
         </div>
         <div class="filterSection">
             <h1>Filter</h1>
-            <div class="filterSub">
+            <div class="filterSub" data-filter="material">
                 <h2>Material</h2>
                 <div class="checkboxGroup">
                     <div class="checkboxOption">
@@ -137,7 +128,7 @@
                 </div>
             </div>
 
-            <div class="filterSub">
+            <div class="filterSub" data-filter="pieces">
                 <h2>Pieces</h2>
                 <div class="checkboxGroup">
                     <div class="checkboxOption">
@@ -217,7 +208,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/commonProduct.js"></script>
-    <script src="js/allProducts.js"></script>
+    <script src="js/search.js"></script>
+
 </body>
 
 </html>

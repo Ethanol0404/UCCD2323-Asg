@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/main.css">
     <!-- productItem CSS -->
     <link rel="stylesheet" type="text/css" href="css/productDetail.css">
+    <link rel="icon" type="image/x-icon" href="picture/favicon.ico">
 </head>
 
 <body>
@@ -29,6 +30,7 @@
         <div class="searchBar">
             <img id="magGlassIcon" src="picture/magGlass.png" alt="magGlass" width="25px" height="25px">
             <input id="search" type="text" placeholder="search for product">
+            <button id="clearSearchBtn" class="clearSearchBtn" style="display: none;">×</button>
         </div>
         <div id="cart">
             <a href="cart.html"><img id="cartIcon" src="picture/cart.png" alt="cart" width="45px" height="45px"></a>
@@ -228,6 +230,10 @@
                     </div>
                 </div>
             </div>
+            <div class="filterButtons">
+                <button id="resetFiltersBtn" class="resetBtn">Reset Filters</button>
+                <button id="applyFiltersBtn" class="applyBtn">Apply Filters</button>
+            </div>
         </div>
     </div>
 
@@ -282,8 +288,9 @@
         </div>
 
     </footer>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/commonProduct.js"></script>
     <script src="js/productDetail.js"></script>
 </body>
 
