@@ -90,6 +90,38 @@ a:hover {
     text-indent: 40px;
     border-radius: 10px;
     border: 1px solid #F6CA93;
+    padding-right: 40px; /* Make room for clear button */
+}
+
+/* Clear search button styling */
+.clearSearchBtn {
+    position: absolute;
+    top: 35px;
+    left: 1360px; /* Position to the right of search input */
+    z-index: 3;
+    background: #ccc;
+    color: #666;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.clearSearchBtn:hover {
+    background: #ff0000;
+    color: white;
+}
+
+.clearSearchBtn:active {
+    background: #777;
+    transform: scale(0.95);
 }
 
 #cart {
@@ -269,7 +301,7 @@ a:hover {
     background: #E3D9C2;
     padding: 20px;
     transition: transform 0.6s ease;
-    height: 600px;
+    height: 650px;
 }
 
 .filterSection:hover {
@@ -350,8 +382,6 @@ input::-webkit-inner-spin-button {
 
 .priceSlider {
     height: 100%;
-    left: 25%;
-    right: 15%;
     position: absolute;
     border-radius: 5px;
     background: #01940b;
@@ -381,6 +411,33 @@ input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
 }
 
+.filterButtons{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.applyBtn, .resetBtn{
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #000;
+    background-color: #01940b;
+}
+.resetBtn{
+    background-color: rgb(252, 101, 45);
+}
+.resetBtn:hover{
+    background-color: orangered;
+}
+.applyBtn:hover{
+    background-color: #02b40e;
+}
 footer { 
     font-family: 'Judson', sans-serif;
     position: relative;

@@ -159,7 +159,7 @@ tbody tr:nth-child(even) {
 
 .highlight {
     font-weight: bold;
-    color: #fdcf01;
+    color: rgb(255, 115, 0);
 }
 
 #orderNow {

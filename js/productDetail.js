@@ -1,4 +1,3 @@
-window.productsData = [];
 // Load product data
 const productImagesContainer = document.getElementById('productImages');
 const productNameElement = document.getElementById('product-name');
@@ -10,20 +9,6 @@ const stockAvailability = document.getElementById('stockAvailability');
 let currentStock = 0;
 const relatedProductsContainer = document.getElementById('relatedProducts');
 
-// Load product data from JSON file
-async function loadProductData() {
-    try {
-        const response = await fetch('js/productInfo2.json');
-        if (!response.ok) {
-            throw new Error('Failed to load products data');
-        }
-        const data = await response.json();
-        productsData = data.products;
-    } catch (error) {
-        console.error('Error loading product data:', error);
-        showAlert('danger', 'Failed to load product information');
-    }
-}
 
 window.loadProduct = function(productId) {
     const product = productsData.find(p => p.id === productId);
@@ -80,43 +65,7 @@ window.loadProduct = function(productId) {
     // Load related products (excluding current product)
     loadRelatedProducts(productId, product.category);
 }
-function createProductCard(product) {
-    const productElement = document.createElement('div');
-    productElement.className = 'related-product'; // can rename to 'product-card'
 
-    productElement.innerHTML = `
-        <img id="related-img" src="${product.images[0]}" alt="${product.name}" width="200" height="200" loading="lazy">
-        <p id="related-product-name">${product.name}</p>
-        <p id="related-price">${formatPrice(product.price)}</p>
-        <div id="related-details">
-            <div>
-                <img src="picture/productDetail/puzzle-piece.png" alt="puzzle" width="25" height="25">
-                <span>Pieces: </span>
-                <p>${product.details.pieces}</p>
-            </div>
-            <div>
-                <img src="picture/productDetail/material.png" alt="material" width="25" height="25">
-                <span>Materials: </span>
-                <p>${product.details.material}</p>
-            </div>
-            <div>
-                <img src="picture/productDetail/maximize.png" alt="maximize" width="25" height="25">
-                <span>Size: </span>
-                <p>${product.details.size}</p>
-            </div>
-        </div>
-    `;
-
-    productElement.addEventListener('click', () => {
-        window.scrollTo(0, 0);
-        const productContainer = document.querySelector('.product-container-2');
-        if (productContainer) productContainer.scrollTop = 0;
-
-        window.history.pushState({}, '', `productDetail.html?id=${product.id}`);
-        loadProduct(product.id);
-    });
-    return productElement;
-}
 // Load related products
 function loadRelatedProducts(currentProductId) {
     relatedProductsContainer.innerHTML = '';
@@ -131,7 +80,7 @@ function loadRelatedProducts(currentProductId) {
 
     // Create product elements
     productsToShow.forEach(product => {
-        const card = createProductCard(product);
+        const card = createProductCard(product, { mode: "list" });
         relatedProductsContainer.appendChild(card);
     });
 
@@ -224,9 +173,6 @@ function getProductIdFromUrl() {
     return params.get('id') || productsData[0]?.id || 'animal12';
 }
 
-function formatPrice(price) {
-    return `RM${price.toFixed(2)}`;
-}
 
 function showAlert(type, message) {
     // Implement your alert/notification system here
